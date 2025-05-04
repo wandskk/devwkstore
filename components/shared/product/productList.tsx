@@ -1,4 +1,5 @@
 import React from "react";
+import ProductCard from "./productCard";
 
 interface ProductListProps {
   data: any;
@@ -15,7 +16,7 @@ const ProductList: React.FC<ProductListProps> = ({ data, title, limit }) => {
       {data.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {limitedData.map((product: any) => (
-            <div key={product.slug}>{product.name}</div>
+            <ProductCard key={product.slug} product={product} />
           ))}
         </div>
       ) : (
