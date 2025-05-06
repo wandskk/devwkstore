@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import ProductPrice from "@/components/shared/product/productPrice";
+import ProductImages from "@/components/shared/product/productImages";
 
 interface ProductDetailsPageProps {
   params: Promise<{ slug: string }>;
@@ -25,7 +26,9 @@ const ProductDetailsPage: React.FC<ProductDetailsPageProps> = async ({
       <section>
         <div className="grid grid-cols-1 md:grid-cols-5">
           {/* Images Column */}
-          <div className="col-span-2">{/* Images Component */}</div>
+          <div className="col-span-2">
+            <ProductImages images={product.images} />
+          </div>
           {/* Details Column */}
           <div className="col-span-2 p-4">
             <div className="flex flex-col gap-6">
