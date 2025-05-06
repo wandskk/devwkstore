@@ -1,3 +1,3 @@
-export const date = {
+export const dateUtils = {
     getCurrentYear: () => new Date().getFullYear()
 }
