@@ -1,13 +1,12 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import ProductPrice from "./productPrice";
+import { Product } from "@/types/product";
 
 interface ProductCardProps {
-  product: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+  product: Product;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
