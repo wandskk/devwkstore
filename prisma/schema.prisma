@@ -1,5 +1,6 @@
 generator client {
   provider        = "prisma-client-js"
+  output          = "../lib/generated/prisma"
   previewFeatures = ["driverAdapters"]
 }
 
@@ -33,7 +34,7 @@ model User {
   image         String?
   password      String?
   role          String    @default("user")
-  adress        Json      @db.Json
+  adress        Json?      @db.Json
   paymentMethod String?
   createdAt     DateTime  @default(now()) @db.Timestamp(6)
   updatedAt     DateTime  @updatedAt
