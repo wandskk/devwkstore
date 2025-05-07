@@ -1,5 +1,4 @@
 "use client";
-
 import React from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,44 +10,57 @@ import {
   DropdownMenuCheckboxItem,
 } from "@/components/ui/dropdown-menu";
 import { useTheme } from "next-themes";
+import { SunIcon, MoonIcon, SunMoon } from "lucide-react";
 import { useIsMounted } from "@/hooks/useIsMounted";
-import { themes, Theme, themeIcons } from "@/config/theme.config";
 
 const ModeToggle = () => {
-  const { theme = "system", setTheme } = useTheme();
   const isMounted = useIsMounted();
+  const { theme, setTheme } = useTheme();
 
-  const safeTheme: Theme = themes.includes(theme as Theme)
-    ? (theme as Theme)
-    : "system";
+  if (!isMounted) {
+    return null;
+  }
 
-  if (isMounted)
-    return (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="ghost"
-            className="focus-visible:ring-0 focus-visible:ring-offset-0"
-            aria-label="Toggle theme"
-          >
-            {themeIcons[safeTheme]()}
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent>
-          <DropdownMenuLabel>Appearance</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          {themes.map((themeMode) => (
-            <DropdownMenuCheckboxItem
-              key={themeMode}
-              checked={theme === themeMode}
-              onCheckedChange={() => setTheme(themeMode)}
-            >
-              {themeMode[0].toUpperCase() + themeMode.slice(1)}
-            </DropdownMenuCheckboxItem>
-          ))}
-        </DropdownMenuContent>
-      </DropdownMenu>
-    );
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="ghost"
+          className="focus-visible:ring-0 focus-visible:ring-offset-0"
+        >
+          {theme === "system" ? (
+            <SunMoon />
+          ) : theme === "dark" ? (
+            <MoonIcon />
+          ) : (
+            <SunIcon />
+          )}
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        <DropdownMenuLabel>Appearance</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuCheckboxItem
+          checked={theme === "system"}
+          onClick={() => setTheme("system")}
+        >
+          System
+        </DropdownMenuCheckboxItem>
+        <DropdownMenuCheckboxItem
+          checked={theme === "dark"}
+          onClick={() => setTheme("dark")}
+        >
+          Dark
+        </DropdownMenuCheckboxItem>
+        <DropdownMenuCheckboxItem
+          checked={theme === "light"}
+          onClick={() => setTheme("light")}
+        >
+          Light
+        </DropdownMenuCheckboxItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
 };
 
 export default ModeToggle;
