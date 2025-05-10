@@ -60,7 +60,7 @@ export async function signUpUser(prevState: unknown, formaData: FormData) {
         }))
 
         return {
-            success: true, message: 'User regostered successfully'
+            success: true, message: 'User registered successfully'
         }
     } catch (error) {
         if (isRedirectError(error)) {
