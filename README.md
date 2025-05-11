@@ -58,12 +58,13 @@ To run the project locally:
    ```bash
    git clone https://github.com/wandskk/devwkstore.git
    cd devwkstore
-   npm install
+   ````
 
 2. **Install dependencies:**
 
    ```bash
    npm install
+   ````
 
 3. **Configure environment variables:**
 Create a .env.local file at the root of the project with the following content:
@@ -78,22 +79,26 @@ Create a .env.local file at the root of the project with the following content:
    NEXTAUTH_URL="http://localhost:3000"
    NEXTAUTH_URL_INTERNAL="http://localhost:3000"
    ENCRYPTION_KEY="your_encryption_key"
+   ````
 
 4. **Run database migrations:**
 
    ```bash
    npx prisma migrate dev
+   ````
 
 5. **Start the development server:**
 
    ```bash
    npm run dev
+   ````
 
 ## ✅ Testing
 To run tests:
 
    ```bash
    npm run test
+   ````
 
 ## 📈 Roadmap
 
@@ -121,5 +126,5 @@ This project is licensed under the MIT License.
 
 ## 📬 Contact
 Name: Wanderson
-LinkedIn: linkedin.com/in/wandskk
-Email: wanderson@example.com
+LinkedIn: [[https://devwkstoree.vercel.app/](https://www.linkedin.com/in/wanderson-kenedy-soares/)]
+Email: [[devwk.c@gmail.com](mailto:devwk.c@gmail.com)]
