@@ -1,6 +1,6 @@
 # DevwkStore 🛒
 
-![DevwkStore - Home](https://github.com/user-attachments/assets/cd26d58d-dbcf-4169-a4cb-9757f3e3d331)
+![DevwkStore - Home](https://github.com/user-attachments/assets/a213a78c-b47b-4502-8523-76d7f7080403)
 
 **DevwkStore** is a modern full-stack e-commerce application built with cutting-edge technologies like Next.js 15, React 19, and TypeScript. The project offers a comprehensive shopping experience, including user authentication, product management, shopping cart functionality, integration with payments (Stripe and PayPal), transactional email sending, and a robust administrative dashboard.
 
