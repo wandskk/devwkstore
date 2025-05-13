@@ -128,6 +128,9 @@ Contributions are welcome! Feel free to open issues or submit pull requests with
 This project is licensed under the MIT License.
 
 ## 📬 Contact
+
 Name: Wanderson
+
 LinkedIn: [[https://devwkstoree.vercel.app/](https://www.linkedin.com/in/wanderson-kenedy-soares/)]
+
 Email: [[devwk.c@gmail.com](mailto:devwk.c@gmail.com)]
