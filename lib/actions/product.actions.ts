@@ -20,3 +20,7 @@ export async function getLatestProducts() {
 export async function getProductBySlug(slug: string) {
     return await prisma.product.findFirst({ where: { slug } })
 }
+
+export async function getProductById(id: string) {
+    return await prisma.product.findFirst({ where: { id } })
+}

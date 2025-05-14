@@ -24,8 +24,6 @@ const AddToCart = ({ item }: { item: CartItem }) => {
       return;
     }
 
-    // Handle success add to cart
-
     toast({
       description: `${item.name} added to cart`,
       action: (
