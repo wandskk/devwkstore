@@ -1,15 +1,18 @@
 "use server";
 
-import { CartItem } from "@/types/cart";
+import { Cart, CartItem } from "@/types/cart";
 import { errorUtils } from "@/utils/errorUtils";
 import { cartUtils } from "@/utils/cartUtils";
 import { prisma } from "@/db/prisma";
-import { convertUtils } from "@/utils/convertUtils";
-import { cartItemSchema } from "../validators/cart";
+import { cartItemSchema, insertCartSchema } from "../validators/cart";
 import { getProductById } from "./product.actions";
+import { priceUtils } from "@/utils/priceUtils";
+import { convertToPlainObject } from "../utils";
+import { revalidatePath } from "next/cache";
 
 export async function addItemToCart(data: CartItem) {
   try {
+    const { calculatePrices } = priceUtils;
     const { sessionCartId, userId } = await cartUtils.getCartAndUserCookies();
 
     const cart = await getMyCart();
@@ -18,17 +21,26 @@ export async function addItemToCart(data: CartItem) {
 
     const product = await getProductById(item.productId);
 
-    console.log({
-      "Session Cart ID": sessionCartId,
-      "User ID": userId,
-      "Item Requested": item,
-      "Product Found": product,
-    });
+    if (!product) throw new Error("Product not found");
 
-    return {
-      success: true,
-      message: "Item added to cart",
-    };
+    if (!cart) {
+      const newCart = insertCartSchema.parse({
+        userId: userId,
+        items: [item],
+        sessionCartId: sessionCartId,
+        ...calculatePrices([item]),
+      });
+
+      await addCartToDatabase(newCart);
+
+      revalidatePath(`/product/${product.slug}`);
+
+      return {
+        success: true,
+        message: "Item added to cart",
+      };
+    } else {
+    }
   } catch (error) {
     return {
       success: false,
@@ -47,7 +59,7 @@ export async function getMyCart() {
 
     if (!cart) return undefined;
 
-    return convertUtils.convertToPlainObject({
+    return convertToPlainObject({
       ...cart,
       items: cart.items as CartItem[],
       itemsPrice: cart.itemsPrice.toString(),
@@ -61,4 +73,10 @@ export async function getMyCart() {
       message: errorUtils.format(error),
     };
   }
+}
+
+export async function addCartToDatabase(cart: Cart) {
+  await prisma.cart.create({
+    data: cart,
+  });
 }
