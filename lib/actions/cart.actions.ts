@@ -9,11 +9,17 @@ import { getProductById } from "./product.actions";
 import { priceUtils } from "@/utils/priceUtils";
 import { convertToPlainObject } from "../utils";
 import { revalidatePath } from "next/cache";
+import { productUtils } from "@/utils/productUtils";
+import { Prisma } from "@prisma/client";
+
+type CartWithId = Cart & { id: string };
 
 export async function addItemToCart(data: CartItem) {
   try {
+    const { existSameCartItem, getCartAndUserCookies } = cartUtils;
     const { calculatePrices } = priceUtils;
-    const { sessionCartId, userId } = await cartUtils.getCartAndUserCookies();
+    const { sessionCartId, userId } = await getCartAndUserCookies();
+    const { validateStock } = productUtils;
 
     const cart = await getMyCart();
 
@@ -40,6 +46,26 @@ export async function addItemToCart(data: CartItem) {
         message: "Item added to cart",
       };
     } else {
+      const existItem = existSameCartItem(cart.items, item);
+
+      if (existItem) {
+        validateStock(product, existItem);
+        existItem.qty = existItem.qty + 1;
+      } else {
+        validateStock(product);
+        cart.items.push(item);
+      }
+
+      await updateCartInDatabase(cart);
+
+      revalidatePath(`/product/${product.slug}`);
+
+      return {
+        success: true,
+        message: `${product.name} ${
+          existItem ? "Updated in" : "added to"
+        } cart`,
+      };
     }
   } catch (error) {
     return {
@@ -49,7 +75,7 @@ export async function addItemToCart(data: CartItem) {
   }
 }
 
-export async function getMyCart() {
+export async function getMyCart(): Promise<CartWithId | undefined> {
   try {
     const { sessionCartId, userId } = await cartUtils.getCartAndUserCookies();
 
@@ -60,23 +86,35 @@ export async function getMyCart() {
     if (!cart) return undefined;
 
     return convertToPlainObject({
-      ...cart,
+      id: cart.id,
       items: cart.items as CartItem[],
       itemsPrice: cart.itemsPrice.toString(),
       totalPrice: cart.totalPrice.toString(),
       shippingPrice: cart.shippingPrice.toString(),
       taxPrice: cart.taxPrice.toString(),
+      sessionCartId: cart.sessionCartId,
+      userId: cart.userId,
     });
   } catch (error) {
-    return {
-      success: false,
-      message: errorUtils.format(error),
-    };
+    console.error("getMyCart error:", error);
+    return undefined;
   }
 }
 
 export async function addCartToDatabase(cart: Cart) {
   await prisma.cart.create({
     data: cart,
+  });
+}
+
+export async function updateCartInDatabase(cart: CartWithId) {
+  const { calculatePrices } = priceUtils;
+
+  await prisma.cart.update({
+    where: { id: cart.id },
+    data: {
+      items: cart.items as Prisma.CartUpdateitemsInput[],
+      ...calculatePrices(cart.items as CartItem[]),
+    },
   });
 }
