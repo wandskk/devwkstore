@@ -141,7 +141,7 @@ export async function removeItemFromCart(productId: string) {
 
     return {
       success: true,
-      message: `${product.name} was removed from card`,
+      message: `${product.name} was removed from cart`,
     };
   } catch (error) {
     return {
