@@ -128,7 +128,6 @@ export async function removeItemFromCart(productId: string) {
 
     if (!product) throw new Error("Product not found");
 
-    //  Get user cart
     const cart = await getMyCart();
     if (!cart) throw new Error("Cart not found");
 

@@ -1,3 +1,5 @@
+"use server";
+
 import React from "react";
 import { getProductBySlug } from "@/lib/actions/product.actions";
 import { notFound } from "next/navigation";
@@ -6,6 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import ProductPrice from "@/components/shared/product/productPrice";
 import ProductImages from "@/components/shared/product/productImages";
 import AddToCart from "@/components/shared/product/addToCart";
+import { getMyCart } from "@/lib/actions/cart.actions";
 
 interface ProductDetailsPageProps {
   params: Promise<{ slug: string }>;
@@ -16,6 +19,7 @@ const ProductDetailsPage: React.FC<ProductDetailsPageProps> = async ({
 }) => {
   const { slug } = await params;
   const product = await getProductBySlug(slug);
+  const cart = await getMyCart();
 
   if (!product) return notFound();
   const productPrice = Number(product.price);
@@ -25,11 +29,9 @@ const ProductDetailsPage: React.FC<ProductDetailsPageProps> = async ({
     <>
       <section>
         <div className="grid grid-cols-1 md:grid-cols-5">
-          {/* Images Column */}
           <div className="col-span-2">
             <ProductImages images={product.images} />
           </div>
-          {/* Details Column */}
           <div className="col-span-2 p-4">
             <div className="flex flex-col gap-6">
               <p>
@@ -51,7 +53,6 @@ const ProductDetailsPage: React.FC<ProductDetailsPageProps> = async ({
               <p>{product.description}</p>
             </div>
           </div>
-          {/* Action Column */}
           <div>
             <Card>
               <CardContent className="p-4">
@@ -73,6 +74,7 @@ const ProductDetailsPage: React.FC<ProductDetailsPageProps> = async ({
                 {hasStock && (
                   <div className="flex-center">
                     <AddToCart
+                      cart={cart}
                       item={{
                         productId: product.id,
                         name: product.name,
