@@ -1,4 +1,5 @@
 import { auth } from "@/auth";
+import { CartItem } from "@/types/cart";
 import { cookies } from "next/headers";
 
 export const cartUtils = {
@@ -13,5 +14,10 @@ export const cartUtils = {
       sessionCartId,
       userId,
     };
+  },
+  existSameCartItem: (cartItems: CartItem[], item: CartItem) => {
+    return (cartItems as CartItem[]).find(
+      (x) => x.productId === item.productId
+    );
   },
 };
