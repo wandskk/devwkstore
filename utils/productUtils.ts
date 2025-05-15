@@ -8,4 +8,11 @@ export const productUtils = {
     if (compareWith && product.stock < compareWith.qty + 1)
       throw new Error("Insufficient stock compared to the reference product.");
   },
+  existProduct: (cartItems: CartItem[], productId: string) => {
+    const exist = (cartItems as CartItem[]).find(
+      (x) => x.productId === productId
+    );
+    if (!exist) throw new Error("Item not found");
+    else return exist;
+  },
 };
