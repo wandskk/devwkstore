@@ -1,6 +1,6 @@
-import { auth } from "@/auth";
-import { CartItem } from "@/types/cart";
+import { Cart, CartItem } from "@/types/cart";
 import { cookies } from "next/headers";
+import { auth } from "@/auth";
 
 export const cartUtils = {
   getCartAndUserCookies: async () => {
@@ -16,8 +16,23 @@ export const cartUtils = {
     };
   },
   existSameCartItem: (cartItems: CartItem[], item: CartItem) => {
-    return (cartItems as CartItem[]).find(
-      (x) => x.productId === item.productId
+    return cartItems.find((x) => x.productId === item.productId);
+  },
+  updateCartItemsAfterRemoval: (cart: Cart, productId: string): CartItem[] => {
+    const existingItem = cart.items.find(
+      (item) => item.productId === productId
     );
+
+    if (!existingItem) {
+      return cart.items;
+    }
+
+    if (existingItem.qty === 1) {
+      return cart.items.filter((item) => item.productId !== productId);
+    } else {
+      return cart.items.map((item) =>
+        item.productId === productId ? { ...item, qty: item.qty - 1 } : item
+      );
+    }
   },
 };

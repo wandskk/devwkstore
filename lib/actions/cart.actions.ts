@@ -118,3 +118,36 @@ export async function updateCartInDatabase(cart: CartWithId) {
     },
   });
 }
+
+export async function removeItemFromCart(productId: string) {
+  try {
+    // const { sessionCartId } = await cartUtils.getCartAndUserCookies();
+    const { existProduct } = productUtils;
+
+    const product = await getProductById(productId);
+
+    if (!product) throw new Error("Product not found");
+
+    //  Get user cart
+    const cart = await getMyCart();
+    if (!cart) throw new Error("Cart not found");
+
+    existProduct(cart.items, productId);
+
+    cart.items = cartUtils.updateCartItemsAfterRemoval(cart, productId);
+
+    await updateCartInDatabase(cart);
+
+    revalidatePath(`/product/${product.slug}`);
+
+    return {
+      success: true,
+      message: `${product.name} was removed from card`,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: errorUtils.format(error),
+    };
+  }
+}
