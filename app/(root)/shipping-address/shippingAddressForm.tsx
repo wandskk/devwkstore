@@ -7,7 +7,7 @@ import { useToast } from "@/hooks/useToast";
 import { shippingAddressSchema } from "@/lib/validators/shippingAddress";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ControllerRenderProps, useForm } from "react-hook-form";
+import { ControllerRenderProps, SubmitHandler, useForm } from "react-hook-form";
 import { shippingAddressDefaultValues } from "@/lib/constants";
 import {
   Form,
@@ -18,9 +18,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { formShippingAddressfields } from "@/lib/constants/formShippingAddressfields";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Loader } from "lucide-react";
+import { formShippingAddressfields } from "@/lib/constants/formShippingAddressfields";
+import { updateUserAddress } from "@/lib/actions/user.actions";
 
 type ShippingAddressFormFields = keyof z.infer<typeof shippingAddressSchema>;
 
@@ -35,9 +36,22 @@ const ShippingAddressForm = ({ address }: { address: ShippingAddress }) => {
 
   const [isPending, startTransition] = useTransition();
 
-  const onSubmit = (values: z.infer<typeof shippingAddressSchema>) => {
-    console.log(values);
-    return;
+  const onSubmit: SubmitHandler<z.infer<typeof shippingAddressSchema>> = async (
+    values
+  ) => {
+    startTransition(async () => {
+      const res = await updateUserAddress(values);
+
+      if (!res.success) {
+        toast({
+          variant: "destructive",
+          description: res.message,
+        });
+        return;
+      }
+
+      router.push("/payment-method");
+    });
   };
 
   return (
@@ -54,7 +68,7 @@ const ShippingAddressForm = ({ address }: { address: ShippingAddress }) => {
             onSubmit={form.handleSubmit(onSubmit)}
           >
             <ShippingAddressFormFields form={form} />
-            
+
             <div className="flex gap-2">
               <Button type="submit" disabled={isPending}>
                 {isPending ? (
