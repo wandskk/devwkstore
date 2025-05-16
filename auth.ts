@@ -79,26 +79,26 @@ export const config = {
         }
       }
 
-      if (trigger === 'signIn' || trigger === 'signUp') {
+      if (trigger === "signIn" || trigger === "signUp") {
         const cookiesObject = await cookies();
-        const sessionCartId = cookiesObject.get('sessionCartId')?.value;
+        const sessionCartId = cookiesObject.get("sessionCartId")?.value;
 
         if (sessionCartId) {
           const sessionCart = await prisma.cart.findFirst({
-            where: { sessionCartId }
-          })
+            where: { sessionCartId },
+          });
 
           if (sessionCart) {
             await prisma.cart.deleteMany({
-              where: { userId: user.id }
-            })
+              where: { userId: user.id },
+            });
 
             await prisma.cart.update({
               where: { id: sessionCart.id },
               data: {
                 userId: user.id,
-              }
-            })
+              },
+            });
           }
         }
       }
@@ -106,6 +106,21 @@ export const config = {
       return token;
     },
     authorized({ request, auth }: any) {
+      const protectedPaths = [
+        /\/shipping-address/,
+        /\/payment-method/,
+        /\/place-order/,
+        /\/profile/,
+        /\/user\/(.*)/,
+        /\/order\/(.*)/,
+        /\/admin/,
+      ];
+
+      const { pathname } = request.nextUrl;
+
+      if (!auth && protectedPaths.some((path) => path.test(pathname)))
+        return false;
+
       if (!request.cookies.get("sessionCartId")) {
         const sessionCartId = crypto.randomUUID();
 
