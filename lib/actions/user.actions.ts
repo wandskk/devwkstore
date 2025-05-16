@@ -1,75 +1,94 @@
-'use server';
+"use server";
 
 import { signInFormSchema, signUpFormSchema } from "@/lib/validators/form";
-import { signIn, signOut } from "@/auth"
+import { signIn, signOut } from "@/auth";
 import { isRedirectError } from "next/dist/client/components/redirect";
 import { hashSync } from "bcrypt-ts-edge";
-import { prisma } from "@/db/prisma"
+import { prisma } from "@/db/prisma";
 import { errorUtils } from "@/utils/errorUtils";
 
-export async function signInWithCredentials(prevState: unknown, formaData: FormData) {
-    try {
-        const user = signInFormSchema.parse({
-            email: formaData.get('email'),
-            password: formaData.get('password'),
-        })
+export async function signInWithCredentials(
+  prevState: unknown,
+  formaData: FormData
+) {
+  try {
+    const user = signInFormSchema.parse({
+      email: formaData.get("email"),
+      password: formaData.get("password"),
+    });
 
-        await signIn('credentials', user);
+    await signIn("credentials", user);
 
-        return {
-            success: true, message: 'Signed in successfully'
-        }
-    } catch (error) {
-        if (isRedirectError(error)) {
-            throw error;
-        }
-
-        return {
-            success: false, message: 'Invalid email or password'
-        }
+    return {
+      success: true,
+      message: "Signed in successfully",
+    };
+  } catch (error) {
+    if (isRedirectError(error)) {
+      throw error;
     }
+
+    return {
+      success: false,
+      message: "Invalid email or password",
+    };
+  }
 }
 
 export async function signOutUser() {
-    await signOut()
+  await signOut();
 }
 
 export async function signUpUser(prevState: unknown, formaData: FormData) {
-    try {
-        const user = signUpFormSchema.parse({
-            name: formaData.get('name'),
-            email: formaData.get('email'),
-            password: formaData.get('password'),
-            confirmPassword: formaData.get('confirmPassword'),
-        })
+  try {
+    const user = signUpFormSchema.parse({
+      name: formaData.get("name"),
+      email: formaData.get("email"),
+      password: formaData.get("password"),
+      confirmPassword: formaData.get("confirmPassword"),
+    });
 
-        user.password = hashSync(user.password, 10);
+    user.password = hashSync(user.password, 10);
 
-        const plainPassword = user.password
+    const plainPassword = user.password;
 
-        await prisma.user.create({
-            data: {
-                name: user.name,
-                email: user.email,
-                password: user.password,
-            }
-        })
+    await prisma.user.create({
+      data: {
+        name: user.name,
+        email: user.email,
+        password: user.password,
+      },
+    });
 
-        await (signIn('credentials', {
-            email: user.email,
-            password: plainPassword
-        }))
+    await signIn("credentials", {
+      email: user.email,
+      password: plainPassword,
+    });
 
-        return {
-            success: true, message: 'User registered successfully'
-        }
-    } catch (error) {
-        if (isRedirectError(error)) {
-            throw error;
-        }
-
-        return {
-            success: false, message: errorUtils.format(error)
-        }
+    return {
+      success: true,
+      message: "User registered successfully",
+    };
+  } catch (error) {
+    if (isRedirectError(error)) {
+      throw error;
     }
+
+    return {
+      success: false,
+      message: errorUtils.format(error),
+    };
+  }
+}
+
+export async function getUserById(userId: string) {
+  const user = await prisma.user.findFirst({
+    where: {
+      id: userId,
+    },
+  });
+
+  if (!user) throw new Error("User not found");
+
+  return user;
 }
