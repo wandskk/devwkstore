@@ -7,10 +7,10 @@ import { prisma } from "@/db/prisma";
 import { cartItemSchema, insertCartSchema } from "../validators/cart";
 import { getProductById } from "./product.actions";
 import { priceUtils } from "@/utils/priceUtils";
-import { convertToPlainObject } from "../utils";
 import { revalidatePath } from "next/cache";
 import { productUtils } from "@/utils/productUtils";
 import { Prisma } from "@prisma/client";
+import { convertUtils } from "@/utils/convertUtils";
 
 type CartWithId = Cart & { id: string };
 
@@ -85,7 +85,7 @@ export async function getMyCart(): Promise<CartWithId | undefined> {
 
     if (!cart) return undefined;
 
-    return convertToPlainObject({
+    return convertUtils.convertToPlainObject({
       id: cart.id,
       items: cart.items as CartItem[],
       itemsPrice: cart.itemsPrice.toString(),

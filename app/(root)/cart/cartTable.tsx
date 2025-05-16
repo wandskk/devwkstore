@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Cart } from "@/types/cart";
+import { Cart, CartItem } from "@/types/cart";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/useToast";
 import { useTransition } from "react";
@@ -18,10 +18,11 @@ import {
   TableCell,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
+import { currencyUtils } from "@/utils/currencyUtils";
+import { Card, CardContent } from "@/components/ui/card";
 
 const CartTable = ({ cart }: { cart?: Cart }) => {
   const router = useRouter();
-  const { toast } = useToast();
   const [isPending, startTransition] = useTransition();
 
   return (
@@ -60,66 +61,113 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
                       </Link>
                     </TableCell>
                     <TableCell className="flex-center gap-2">
-                      <Button
-                        disabled={isPending}
-                        variant="outline"
-                        type="button"
-                        onClick={() =>
-                          startTransition(async () => {
-                            const res = await removeItemFromCart(
-                              item.productId
-                            );
-
-                            if (!res.success) {
-                              toast({
-                                variant: "destructive",
-                                description: res.message,
-                              });
-                            }
-                          })
-                        }
-                      >
-                        {isPending ? (
-                          <Loader className="w-4 h-4 animate-spin" />
-                        ) : (
-                          <Minus className="w-4 h-4" />
-                        )}
-                      </Button>
-                      <span>{item.qty}</span>
-                      <Button
-                        disabled={isPending}
-                        variant="outline"
-                        type="button"
-                        onClick={() =>
-                          startTransition(async () => {
-                            const res = await addItemToCart(item);
-
-                            if (!res.success) {
-                              toast({
-                                variant: "destructive",
-                                description: res.message,
-                              });
-                            }
-                          })
-                        }
-                      >
-                        {isPending ? (
-                          <Loader className="w-4 h-4 animate-spin" />
-                        ) : (
-                          <Plus className="w-4 h-4" />
-                        )}
-                      </Button>
+                      <RenderQtyButtonsActions
+                        isPending={isPending}
+                        startTransition={startTransition}
+                        item={item}
+                      />
                     </TableCell>
-                    <TableCell className="text-right">${item.price}</TableCell>
+                    <TableCell className="text-right">
+                      {currencyUtils.format(item.price)}
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
           </div>
+          <Card>
+            <CardContent className="p-4 gap-4">
+              <div className="pb-3 text-xl">
+                Subtotal ({cart.items.reduce((a, c) => a + c.qty, 0)}):{" "}
+                <span className="font-bold">
+                  {currencyUtils.format(cart.itemsPrice)}
+                </span>
+              </div>
+              <Button
+                className="w-full"
+                disabled={isPending}
+                onClick={() => {
+                  startTransition(() => router.push("/shipping-address"));
+                }}
+              >
+                {isPending ? (
+                  <Loader className="w-4 h-4 animate-spin" />
+                ) : (
+                  <ArrowRight className="w-4 h-4" />
+                )}{" "}
+                Proceed to checkout
+              </Button>
+            </CardContent>
+          </Card>
         </div>
       )}
     </>
   );
+};
+
+const RenderQtyButtonsActions = ({
+  item,
+  isPending,
+  startTransition,
+}: {
+  item: CartItem;
+  isPending: boolean;
+  startTransition: React.TransitionStartFunction;
+}) => {
+  const { toast } = useToast();
+
+  if (item)
+    return (
+      <>
+        <Button
+          disabled={isPending}
+          variant="outline"
+          type="button"
+          onClick={() =>
+            startTransition(async () => {
+              const res = await removeItemFromCart(item.productId);
+
+              if (!res.success) {
+                toast({
+                  variant: "destructive",
+                  description: res.message,
+                });
+              }
+            })
+          }
+        >
+          {isPending ? (
+            <Loader className="w-4 h-4 animate-spin" />
+          ) : (
+            <Minus className="w-4 h-4" />
+          )}
+        </Button>
+        <span>{item.qty}</span>
+        <Button
+          disabled={isPending}
+          variant="outline"
+          type="button"
+          onClick={() =>
+            startTransition(async () => {
+              const res = await addItemToCart(item);
+
+              if (!res.success) {
+                toast({
+                  variant: "destructive",
+                  description: res.message,
+                });
+              }
+            })
+          }
+        >
+          {isPending ? (
+            <Loader className="w-4 h-4 animate-spin" />
+          ) : (
+            <Plus className="w-4 h-4" />
+          )}
+        </Button>
+      </>
+    );
 };
 
 export default CartTable;
