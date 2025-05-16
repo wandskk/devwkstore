@@ -27,7 +27,7 @@ const ShippingAddressPage = async () => {
 
   return (
     <>
-      <CheckoutSteps current={1} />
+      <CheckoutSteps />
       <ShippingAddressForm address={user.address as ShippingAddress} />
     </>
   );
