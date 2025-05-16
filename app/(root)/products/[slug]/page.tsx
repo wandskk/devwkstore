@@ -10,6 +10,19 @@ import ProductImages from "@/components/shared/product/productImages";
 import AddToCart from "@/components/shared/product/addToCart";
 import { getMyCart } from "@/lib/actions/cart.actions";
 
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}) {
+  const product = await getProductBySlug(params.slug);
+  
+  return {
+    title: product?.name,
+    description: product?.description,
+  };
+}
+
 interface ProductDetailsPageProps {
   params: Promise<{ slug: string }>;
 }
