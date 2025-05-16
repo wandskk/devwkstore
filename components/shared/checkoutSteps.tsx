@@ -1,8 +1,15 @@
+"use client"; 
+
 import React from "react";
 import { checkoutStepsData } from "@/lib/constants/CheckoutStepsData";
 import { cn } from "@/lib/utils";
+import { usePathname } from "next/navigation";
 
-const CheckoutSteps = ({ current = 0 }) => {
+const CheckoutSteps = () => {
+  const pathname = usePathname();
+  const currentStep = checkoutStepsData.findIndex((step) =>
+    pathname.includes(step.href)
+  );
   return (
     <div className="flex-between flex-col md:flex-row space-x-2 space-y-2 mb-10">
       {checkoutStepsData.map((step, index) => (
@@ -10,7 +17,7 @@ const CheckoutSteps = ({ current = 0 }) => {
           <div
             className={cn(
               "p-2 w-56 rounded-full text-center text-sm",
-              index === current && "bg-secondary"
+              index === currentStep && "bg-secondary"
             )}
           >
             {step.label}
