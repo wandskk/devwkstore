@@ -20,21 +20,33 @@ import {
 import { Button } from "@/components/ui/button";
 import { currencyUtils } from "@/utils/currencyUtils";
 import { Card, CardContent } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
-const CartTable = ({ cart }: { cart?: Cart }) => {
+const CartTable = ({
+  cart,
+  anotherPage,
+}: {
+  cart?: Cart;
+  anotherPage?: boolean;
+}) => {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
   return (
     <>
-      <h1 className="py-4 h2-bold">Shopping Cart</h1>
+      {!anotherPage && <h1 className="py-4 h2-bold">Shopping Cart</h1>}
       {!cart || cart.items.length === 0 ? (
         <div>
           Cart is empty. <Link href="/">Go Shopping</Link>
         </div>
       ) : (
         <div className="grid md:grid-cols-4 md:gap-5">
-          <div className="overflow-x-auto md:col-span-3">
+          <div
+            className={cn(
+              "overflow-x-auto md:col-span-3",
+              anotherPage && "md:col-span-4"
+            )}
+          >
             <Table>
               <TableHeader>
                 <TableRow>
@@ -75,37 +87,39 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
               </TableBody>
             </Table>
           </div>
-          <Card>
-            <CardContent className="p-4 gap-4">
-              <div className="pb-3 text-xl">
-                Subtotal ({cart.items.reduce((a, c) => a + c.qty, 0)}):{" "}
-                <span className="font-bold">
-                  {currencyUtils.format(cart.itemsPrice)}
-                </span>
-              </div>
-              <Button
-                className="w-full"
-                disabled={isPending}
-                onClick={() => {
-                  startTransition(() => router.push("/shipping-address"));
-                }}
-              >
-                {isPending ? (
-                  <Loader className="w-4 h-4 animate-spin" />
-                ) : (
-                  <ArrowRight className="w-4 h-4" />
-                )}{" "}
-                Proceed to checkout
-              </Button>
-            </CardContent>
-          </Card>
+          {!anotherPage && (
+            <Card>
+              <CardContent className="p-4 gap-4">
+                <div className="pb-3 text-xl">
+                  Subtotal ({cart.items.reduce((a, c) => a + c.qty, 0)}):{" "}
+                  <span className="font-bold">
+                    {currencyUtils.format(cart.itemsPrice)}
+                  </span>
+                </div>
+                <Button
+                  className="w-full"
+                  disabled={isPending}
+                  onClick={() => {
+                    startTransition(() => router.push("/shipping-address"));
+                  }}
+                >
+                  {isPending ? (
+                    <Loader className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <ArrowRight className="w-4 h-4" />
+                  )}{" "}
+                  Proceed to checkout
+                </Button>
+              </CardContent>
+            </Card>
+          )}
         </div>
       )}
     </>
   );
 };
 
-const RenderQtyButtonsActions = ({
+export const RenderQtyButtonsActions = ({
   item,
   isPending,
   startTransition,

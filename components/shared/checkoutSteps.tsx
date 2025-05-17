@@ -10,7 +10,14 @@ const CheckoutSteps = () => {
   const pathname = usePathname();
   const currentStep = checkoutStepsData.findIndex((step) =>
     pathname.includes(step.href)
-  );  
+  );
+  const handleBlock = {
+    pages: ["/cart", "/products"],
+    isBlocked: (path: string) =>
+      path === "/" ? true : handleBlock.pages.some((page) => path.includes(page)),
+  };
+
+  if (handleBlock.isBlocked(pathname)) return null;
 
   return (
     <div className="flex-between flex-col md:flex-row space-x-2 space-y-2 mb-10">
