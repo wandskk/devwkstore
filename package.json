@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "node server.js",
+    "dev:next": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -22,6 +23,7 @@
     "bcrypt-ts-edge": "^3.0.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "execa": "^9.5.3",
     "lucide-react": "^0.507.0",
     "next": "15.0.3",
     "next-auth": "^5.0.0-beta.27",
@@ -34,6 +36,7 @@
     "ws": "^8.18.2",
     "zod": "^3.24.4"
   },
+  "type": "module",
   "devDependencies": {
     "@prisma/client": "^6.7.0",
     "@types/node": "^20",
@@ -41,6 +44,8 @@
     "@types/react-dom": "^18",
     "@types/ws": "^8.18.1",
     "bufferutil": "^4.0.9",
+    "concurrently": "^9.1.2",
+    "cross-env": "^7.0.3",
     "eslint": "^8",
     "eslint-config-next": "15.0.3",
     "open": "^10.1.2",
