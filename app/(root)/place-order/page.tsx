@@ -8,7 +8,16 @@ import { ShippingAddress } from "@/types/shippingAddress";
 import { Card, CardContent } from "@/components/ui/card";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import CartTable from "../cart/cartTable";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import Image from "next/image";
+import CartTable, { RenderQtyButtonsActions } from "../cart/cartTable";
 import { currencyUtils } from "@/utils/currencyUtils";
 
 export const metadata: Metadata = {
@@ -16,8 +25,6 @@ export const metadata: Metadata = {
 };
 
 const PlaceOrderPage = async () => {
-  
-
   const cart = await getMyCart();
   const session = await auth();
   const userId = session?.user?.id;
