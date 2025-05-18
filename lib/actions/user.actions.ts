@@ -1,7 +1,7 @@
 "use server";
 
 import { signInFormSchema, signUpFormSchema } from "@/lib/validators/form";
-import { auth, signIn, signOut } from "@/auth";
+import { signIn, signOut } from "@/auth";
 import { isRedirectError } from "next/dist/client/components/redirect";
 import { hashSync } from "bcrypt-ts-edge";
 import { prisma } from "@/db/prisma";
@@ -10,6 +10,7 @@ import { ShippingAddress } from "@/types/shippingAddress";
 import { shippingAddressSchema } from "../validators/shippingAddress";
 import { paymentMethodSchema } from "../validators/paymentMethod";
 import { z } from "zod";
+import { userUtils } from "@/utils/userUtils";
 
 export async function signInWithCredentials(
   prevState: unknown,
@@ -99,18 +100,12 @@ export async function getUserById(userId: string) {
 
 export async function updateUserAddress(data: ShippingAddress) {
   try {
-    const session = await auth();
-
-    const userId = session?.user?.id;
-
-    if (!userId) throw new Error("User not found");
-
-    const currentUser = await getUserById(userId);
+    const currentUser = await userUtils.getUserWithSession();
 
     const address = await shippingAddressSchema.parse(data);
 
     await prisma.user.update({
-      where: { id: currentUser.id },
+      where: { id: currentUser?.id },
       data: { address },
     });
 
@@ -130,18 +125,12 @@ export async function updateUserPaymentMethod(
   data: z.infer<typeof paymentMethodSchema>
 ) {
   try {
-    const session = await auth();
-
-    const userId = session?.user?.id;
-
-    if (!userId) throw new Error("User not found");
-
-    const currentUser = await getUserById(userId);
+    const currentUser = await userUtils.getUserWithSession();
 
     const paymentMethod = await paymentMethodSchema.parse(data);
 
     await prisma.user.update({
-      where: { id: currentUser.id },
+      where: { id: currentUser?.id },
       data: { paymentMethod: paymentMethod.type },
     });
 
