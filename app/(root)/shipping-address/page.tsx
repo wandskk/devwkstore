@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import React from "react";
 import { getMyCart } from "@/lib/actions/cart.actions";
 import { Metadata } from "next";
