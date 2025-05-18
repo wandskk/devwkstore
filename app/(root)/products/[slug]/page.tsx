@@ -1,5 +1,3 @@
-"use server";
-
 import React from "react";
 import { getProductBySlug } from "@/lib/actions/product.actions";
 import { notFound } from "next/navigation";
@@ -9,29 +7,16 @@ import ProductPrice from "@/components/shared/product/productPrice";
 import ProductImages from "@/components/shared/product/productImages";
 import AddToCart from "@/components/shared/product/addToCart";
 import { getMyCart } from "@/lib/actions/cart.actions";
+import { Metadata } from "next";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { slug: string };
-}) {
-  const { slug } = await params;
-  const product = await getProductBySlug(slug);
+export const metadata: Metadata = {
+  title: "Product Details",
+};
 
-  return {
-    title: product?.name,
-    description: product?.description,
-  };
-}
-
-interface ProductDetailsPageProps {
+const ProductDetailsPage = async (props: {
   params: Promise<{ slug: string }>;
-}
-
-const ProductDetailsPage: React.FC<ProductDetailsPageProps> = async ({
-  params,
 }) => {
-  const { slug } = await params;
+  const { slug } = await props.params;
   const product = await getProductBySlug(slug);
   const cart = await getMyCart();
 
