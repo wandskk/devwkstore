@@ -10,8 +10,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { APP_NAME } from "@/lib/constants";
 import CredentialsSignInForm from "./credentials-signin-form";
+import { auth } from "@/auth";
 import { redirect } from "next/navigation";
-import { getUserBySession } from "@/lib/actions/user.actions";
 
 export const metadata: Metadata = {
   title: "Sign In",
@@ -24,9 +24,11 @@ const SignInPage = async (props: {
 }) => {
   const { callbackUrl } = await props.searchParams;
 
-  const user = await getUserBySession();
+  const session = await auth();
 
-  if (user) return redirect(callbackUrl || "/");
+  if (session) {
+    return redirect(callbackUrl || "/");
+  }
 
   return (
     <div className="w-full max-w-md mx-auto">

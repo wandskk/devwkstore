@@ -1,9 +1,9 @@
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 import React from "react";
 import { Metadata } from "next";
 import { getMyCart } from "@/lib/actions/cart.actions";
-import { getUserBySession } from "@/lib/actions/user.actions";
+import { getUserById } from "@/lib/actions/user.actions";
 import { redirect } from "next/navigation";
 import { ShippingAddress } from "@/types/shippingAddress";
 import { Card, CardContent } from "@/components/ui/card";
@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import CartTable from "../cart/cartTable";
 import { currencyUtils } from "@/utils/currencyUtils";
 import { convertUtils } from "@/utils/convertUtils";
+import { auth } from "@/auth";
 
 export const metadata: Metadata = {
   title: "Place Order",
@@ -19,7 +20,14 @@ export const metadata: Metadata = {
 
 const PlaceOrderPage = async () => {
   const cart = await getMyCart();
-  const user = await getUserBySession();
+  const session = await auth();
+
+  const userId = session?.user?.id;
+
+  if (!userId) throw new Error("User not found");
+
+  const user = await getUserById(userId);
+
   const userAddress = user.address as ShippingAddress;
 
   if (!cart || cart.items.length === 0) redirect("/cart");

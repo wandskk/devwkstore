@@ -52,7 +52,6 @@ export const config = {
       },
     }),
   ],
-  trustHost: !!process.env.NEXTAUTH_URL,
   callbacks: {
     async session({ session, user, trigger, token }: any) {
       session.user.id = token.sub;

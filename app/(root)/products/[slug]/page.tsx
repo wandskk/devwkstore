@@ -11,11 +11,14 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Product Details",
+  description: "Product Details",
 };
 
-const ProductDetailsPage = async (props: {
+interface ProductDetailsPageProps {
   params: Promise<{ slug: string }>;
-}) => {
+}
+
+const ProductDetailsPage = async (props: ProductDetailsPageProps) => {
   const { slug } = await props.params;
   const product = await getProductBySlug(slug);
   const cart = await getMyCart();
