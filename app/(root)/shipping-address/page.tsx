@@ -4,7 +4,7 @@ import { getMyCart } from "@/lib/actions/cart.actions";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { ShippingAddress } from "@/types/shippingAddress";
-import { getUserById } from "@/lib/actions/user.actions";
+import { getUserById, getUserBySession } from "@/lib/actions/user.actions";
 import ShippingAddressForm from "./shippingAddressForm";
 
 export const metadata: Metadata = {
@@ -16,13 +16,7 @@ const ShippingAddressPage = async () => {
 
   if (!cart || cart.items.length === 0) redirect("/cart");
 
-  const session = await auth();
-
-  const userId = session?.user?.id;
-
-  if (!userId) throw new Error("No user Id");
-
-  const user = await getUserById(userId);
+  const user = await getUserBySession();
 
   return (
     <>
