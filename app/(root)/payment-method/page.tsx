@@ -1,14 +1,21 @@
 import React from "react";
-import { getUserBySession } from "@/lib/actions/user.actions";
+import { getUserById } from "@/lib/actions/user.actions";
 import { Metadata } from "next";
 import PaymentMethodForm from "./paymentMethodForm";
+import { auth } from "@/auth";
 
 export const metadata: Metadata = {
   title: "Select Payment Method",
 };
 
 const PaymentMethodPage = async () => {
-  const user = await getUserBySession();
+  const session = await auth();
+
+  const userId = session?.user?.id;
+
+  if (!userId) throw new Error("User not found");
+
+  const user = await getUserById(userId);
 
   return (
     <>

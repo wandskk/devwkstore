@@ -97,19 +97,15 @@ export async function getUserById(userId: string) {
   return user;
 }
 
-export async function getUserBySession() {
-  const session = await auth();
-
-  const userId = session?.user?.id;
-
-  if (!userId) throw new Error("No user Id");
-
-  return getUserById(userId);
-}
-
 export async function updateUserAddress(data: ShippingAddress) {
   try {
-    const currentUser = await getUserBySession();
+    const session = await auth();
+
+    const userId = session?.user?.id;
+
+    if (!userId) throw new Error("User not found");
+
+    const currentUser = await getUserById(userId);
 
     const address = await shippingAddressSchema.parse(data);
 
@@ -134,7 +130,13 @@ export async function updateUserPaymentMethod(
   data: z.infer<typeof paymentMethodSchema>
 ) {
   try {
-    const currentUser = await getUserBySession();
+    const session = await auth();
+
+    const userId = session?.user?.id;
+
+    if (!userId) throw new Error("User not found");
+
+    const currentUser = await getUserById(userId);
 
     const paymentMethod = await paymentMethodSchema.parse(data);
 

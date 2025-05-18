@@ -11,8 +11,6 @@ import { revalidatePath } from "next/cache";
 import { productUtils } from "@/utils/productUtils";
 import { Prisma } from "@prisma/client";
 import { convertUtils } from "@/utils/convertUtils";
-import { cookies } from "next/headers";
-import { getUserBySession } from "./user.actions";
 
 type CartWithId = Cart & { id: string };
 
@@ -79,7 +77,7 @@ export async function addItemToCart(data: CartItem) {
 
 export async function getMyCart(): Promise<CartWithId | undefined> {
   try {
-    const { sessionCartId, userId } = await getCartAndUserCookies();
+    const { sessionCartId, userId } = await cartUtils.getCartAndUserCookies();
 
     const cart = await prisma.cart.findFirst({
       where: userId ? { userId: userId } : { sessionCartId: sessionCartId },
@@ -103,22 +101,6 @@ export async function getMyCart(): Promise<CartWithId | undefined> {
   }
 }
 
-export const getCartAndUserCookies = async () => {
-  const cookieStore = await cookies();
-  const sessionCartId = await cookieStore.get("sessionCartId")?.value;
-
-  if (!sessionCartId) {
-    throw new Error("Cart session not found");
-  }
-
-  const user = await getUserBySession();
-
-  return {
-    sessionCartId,
-    userId: user.id,
-  };
-};
-
 export async function addCartToDatabase(cart: Cart) {
   await prisma.cart.create({
     data: cart,
@@ -139,7 +121,7 @@ export async function updateCartInDatabase(cart: CartWithId) {
 
 export async function removeItemFromCart(productId: string) {
   try {
-    // const { sessionCartId } = await getCartAndUserCookies();
+    // const { sessionCartId } = await cartUtils.getCartAndUserCookies();
     const { existProduct } = productUtils;
 
     const product = await getProductById(productId);
