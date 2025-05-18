@@ -3,7 +3,6 @@ export const dynamic = "force-dynamic";
 import React from "react";
 import { Metadata } from "next";
 import { getMyCart } from "@/lib/actions/cart.actions";
-import { getUserById } from "@/lib/actions/user.actions";
 import { redirect } from "next/navigation";
 import { ShippingAddress } from "@/types/shippingAddress";
 import { Card, CardContent } from "@/components/ui/card";
@@ -12,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import CartTable from "../cart/cartTable";
 import { currencyUtils } from "@/utils/currencyUtils";
 import { convertUtils } from "@/utils/convertUtils";
-import { auth } from "@/auth";
+import { userUtils } from "@/utils/userUtils";
 
 export const metadata: Metadata = {
   title: "Place Order",
@@ -20,21 +19,15 @@ export const metadata: Metadata = {
 
 const PlaceOrderPage = async () => {
   const cart = await getMyCart();
-  const session = await auth();
+  const user = await userUtils.getUserWithSession();
 
-  const userId = session?.user?.id;
+  const userAddress = user?.address as ShippingAddress;
 
-  if (!userId) throw new Error("User not found");
+  if (!cart || cart.items.length === 0) return redirect("/cart");
 
-  const user = await getUserById(userId);
+  if (user?.address === null) return redirect("/shipping-address");
 
-  const userAddress = user.address as ShippingAddress;
-
-  if (!cart || cart.items.length === 0) redirect("/cart");
-
-  if (user.address === null) redirect("/shipping-address");
-
-  if (user.paymentMethod === null) redirect("/payment-method");
+  if (user?.paymentMethod === null) return redirect("/payment-method");
 
   return (
     <>
@@ -59,7 +52,7 @@ const PlaceOrderPage = async () => {
           <Card>
             <CardContent className="p-4 gap-4">
               <h2 className="text-xl pb-4">Payment Method</h2>
-              <p>{user.paymentMethod}</p>
+              <p>{user?.paymentMethod}</p>
 
               <div className="mt-3">
                 <Link href="/payment-method">
