@@ -12,6 +12,7 @@ import CartTable from "../cart/cartTable";
 import { currencyUtils } from "@/utils/currencyUtils";
 import { convertUtils } from "@/utils/convertUtils";
 import { userUtils } from "@/utils/userUtils";
+import PlaceOrderForm from "./placeOrderForm";
 
 export const metadata: Metadata = {
   title: "Place Order",
@@ -88,6 +89,7 @@ const PlaceOrderPage = async () => {
                 <div>Total</div>
                 <div>{currencyUtils.format(cart.totalPrice)}</div>
               </div>
+              <PlaceOrderForm />
             </CardContent>
           </Card>
         </div>

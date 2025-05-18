@@ -52,7 +52,7 @@ export const createOrder = async () => {
       totalPrice: cart!.totalPrice,
     };
 
-    const insertedOrderId = await prisma.$transaction(async (tx) => {
+    const insertedOrderId = await prisma.$transaction(async (tx): Promise<string> => {
       const insertedOrder = await tx.order.create({
         data: order,
       });
@@ -83,7 +83,7 @@ export const createOrder = async () => {
           itemsPrice: 0,
         },
       });
-      return insertedOrderId;
+      return insertedOrder.id;
     });
 
     if (!insertedOrderId) throw new Error("Order not created");
