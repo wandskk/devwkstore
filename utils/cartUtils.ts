@@ -1,17 +1,18 @@
 import { Cart, CartItem } from "@/types/cart";
 import { cookies } from "next/headers";
-import { getUserBySession } from "@/lib/actions/user.actions";
+import { auth } from "@/auth";
 
 export const cartUtils = {
   getCartAndUserCookies: async () => {
     const sessionCartId = (await cookies()).get("sessionCartId")?.value;
     if (!sessionCartId) throw new Error("Cart session not found");
 
-    const user = await getUserBySession();
+    const session = await auth();
+    const userId = session?.user?.id ? (session.user.id as string) : undefined;
 
     return {
       sessionCartId,
-      userId: user.id,
+      userId,
     };
   },
   existSameCartItem: (cartItems: CartItem[], item: CartItem) => {
