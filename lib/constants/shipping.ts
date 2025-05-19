@@ -1,4 +1,4 @@
-import { FormShippingAddressField } from "@/lib/types/forms";
+import { FormShippingAddressField } from "@/lib/types/forms.types";
 
 export const SHIPPING_CONSTANTS = {
   form: {

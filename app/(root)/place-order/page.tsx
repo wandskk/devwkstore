@@ -2,16 +2,16 @@ export const dynamic = "force-dynamic";
 
 import React from "react";
 import { Metadata } from "next";
-import { getMyCart } from "@/lib/actions/cart.actions";
+import { getMyCart } from "@/lib/actions/cart";
 import { redirect } from "next/navigation";
-import { ShippingAddress } from "@/lib/types/shipping";
+import { ShippingAddress } from "@/lib/types/shipping.types";
 import { Card, CardContent } from "@/components/ui/card";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import CartTable from "@/app/(root)/cart/cartTable";
-import { currencyUtils } from "@/utils/currencyUtils";
-import { convertUtils } from "@/utils/convertUtils";
-import { userUtils } from "@/utils/userUtils";
+import { formatCurrency } from "@/lib/utils/currency.utils";
+import { convertObjectToArrayOfObjects } from "@/lib/utils/convert.utils";
+import { getUserWithSession } from "@/lib/utils/user.utils";
 import PlaceOrderForm from "./placeOrderForm";
 
 export const metadata: Metadata = {
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 
 const PlaceOrderPage = async () => {
   const cart = await getMyCart();
-  const user = await userUtils.getUserWithSession();
+  const user = await getUserWithSession();
 
   const userAddress = user?.address as ShippingAddress;
 
@@ -75,19 +75,19 @@ const PlaceOrderPage = async () => {
             <CardContent className="p-4 gap-4 space-y-4">
               <div className="flex justify-between">
                 <div>Items</div>
-                <div>{currencyUtils.format(cart.itemsPrice)}</div>
+                <div>{formatCurrency(cart.itemsPrice)}</div>
               </div>
               <div className="flex justify-between">
                 <div>Tax</div>
-                <div>{currencyUtils.format(cart.taxPrice)}</div>
+                <div>{formatCurrency(cart.taxPrice)}</div>
               </div>
               <div className="flex justify-between">
                 <div>Shipping</div>
-                <div>{currencyUtils.format(cart.shippingPrice)}</div>
+                <div>{formatCurrency(cart.shippingPrice)}</div>
               </div>
               <div className="flex justify-between">
                 <div>Total</div>
-                <div>{currencyUtils.format(cart.totalPrice)}</div>
+                <div>{formatCurrency(cart.totalPrice)}</div>
               </div>
               <PlaceOrderForm />
             </CardContent>
@@ -99,7 +99,7 @@ const PlaceOrderPage = async () => {
 };
 
 const RenderUserAddress = ({ address }: { address: ShippingAddress }) => {
-  const addressArray = convertUtils.convertObjectToArrayOfObjects(address);
+  const addressArray = convertObjectToArrayOfObjects(address);
 
   return addressArray.map(
     (item) => item.name !== "fullName" && `${item.value}, `

@@ -1,4 +1,4 @@
-import { FormShippingAddress, FormSignIn, FormSignUp } from "@/lib/types/forms";
+import { FormShippingAddress, FormSignIn, FormSignUp } from "@/lib/types/forms.types";
 
 export const FORM_CONSTANTS = {
   signIn: {

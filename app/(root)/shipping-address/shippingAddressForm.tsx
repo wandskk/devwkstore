@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useTransition } from "react";
-import { ShippingAddress } from "@/lib/types/shipping";
+import { ShippingAddress } from "@/lib/types/shipping.types";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/useToast";
-import { shippingAddressSchema } from "@/lib/validators/shippingAddress";
+import { shippingSchema } from "@/lib/validators/shipping";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ControllerRenderProps, SubmitHandler, useForm } from "react-hook-form";
@@ -21,24 +21,24 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Loader } from "lucide-react";
 import { SHIPPING_CONSTANTS } from "@/lib/constants/shipping";
-import { updateUserAddress } from "@/lib/actions/user.actions";
-import { FormShippingAddressField } from "@/lib/types/forms";
+import { updateUserAddress } from "@/lib/actions/user";
+import { FormShippingAddressField } from "@/lib/types/forms.types";
 
-type ShippingAddressFormFields = keyof z.infer<typeof shippingAddressSchema>;
+type ShippingAddressFormFields = keyof z.infer<typeof shippingSchema>;
 
 const ShippingAddressForm = ({ address }: { address: ShippingAddress }) => {
   const { shippingAddress } = FORM_CONSTANTS;
   const router = useRouter();
   const { toast } = useToast();
 
-  const form = useForm<z.infer<typeof shippingAddressSchema>>({
-    resolver: zodResolver(shippingAddressSchema),
+  const form = useForm<z.infer<typeof shippingSchema>>({
+    resolver: zodResolver(shippingSchema),
     defaultValues: address || shippingAddress.defaultValues,
   });
 
   const [isPending, startTransition] = useTransition();
 
-  const onSubmit: SubmitHandler<z.infer<typeof shippingAddressSchema>> = async (
+  const onSubmit: SubmitHandler<z.infer<typeof shippingSchema>> = async (
     values
   ) => {
     startTransition(async () => {
@@ -91,7 +91,7 @@ const ShippingAddressForm = ({ address }: { address: ShippingAddress }) => {
 const ShippingAddressFormFields = ({
   form,
 }: {
-  form: ReturnType<typeof useForm<z.infer<typeof shippingAddressSchema>>>;
+  form: ReturnType<typeof useForm<z.infer<typeof shippingSchema>>>;
 }) => {
   const { shippingAddressfields } = SHIPPING_CONSTANTS.form;
 
@@ -104,7 +104,7 @@ const ShippingAddressFormFields = ({
           field,
         }: {
           field: ControllerRenderProps<
-            z.infer<typeof shippingAddressSchema>,
+            z.infer<typeof shippingSchema>,
             ShippingAddressFormFields
           >;
         }) => (

@@ -1,11 +1,11 @@
 "use client";
 
 import React from "react";
-import { Cart, CartItem } from "@/lib/types/cart";
+import { Cart, CartItem } from "@/lib/types/cart.types";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/useToast";
 import { useTransition } from "react";
-import { addItemToCart, removeItemFromCart } from "@/lib/actions/cart.actions";
+import { addItemToCart, removeItemFromCart } from "@/lib/actions/cart";
 import { ArrowRight, Loader, Minus, Plus } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -18,7 +18,7 @@ import {
   TableCell,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { currencyUtils } from "@/utils/currencyUtils";
+import { formatCurrency } from "@/lib/utils/currency.utils";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
@@ -86,7 +86,7 @@ const CartTable = ({
                       />
                     </TableCell>
                     <TableCell className="text-right">
-                      {currencyUtils.format(item.price)}
+                      {formatCurrency(item.price)}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -99,7 +99,7 @@ const CartTable = ({
                 <div className="pb-3 text-xl">
                   Subtotal ({cart.items.reduce((a, c) => a + c.qty, 0)}):{" "}
                   <span className="font-bold">
-                    {currencyUtils.format(cart.itemsPrice)}
+                    {formatCurrency(cart.itemsPrice)}
                   </span>
                 </div>
                 <Button

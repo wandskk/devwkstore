@@ -2,7 +2,7 @@ export const dynamic = 'force-dynamic';
 
 import React from "react";
 import CartTable from "./cartTable";
-import { getMyCart } from "@/lib/actions/cart.actions";
+import { getMyCart } from "@/lib/actions/cart";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
