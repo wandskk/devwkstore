@@ -2,16 +2,15 @@
 
 ![DevwkStore - Home](https://github.com/user-attachments/assets/b0c7feef-d5b1-44f6-8e36-0f048634d861)
 
-**DevwkStore** is a modern full-stack e-commerce application built with cutting-edge technologies like Next.js 15, React 19, and TypeScript. The project offers a comprehensive shopping experience, including user authentication, product management, shopping cart functionality, integration with payments (Stripe and PayPal), transactional email sending, and a robust administrative dashboard.
+**DevwkStore** é uma aplicação e-commerce full-stack moderna construída com tecnologias de ponta como Next.js 15, React 19 e TypeScript. O projeto oferece uma experiência de compra completa, incluindo autenticação de usuários, gerenciamento de produtos, funcionalidade de carrinho de compras, integração com pagamentos (Stripe e PayPal), envio de e-mails transacionais e um robusto painel administrativo.
 
-> ⚠️ The project is still under active development. Access the current version at: [https://devwkstoree.vercel.app/](https://devwkstoree.vercel.app/)
+> ⚠️ O projeto está em desenvolvimento ativo. Acesse a versão atual em: [https://devwkstoree.vercel.app/](https://devwkstoree.vercel.app/)
 
-## 📂 Repository
+## 📂 Repositório
 
-Source code available at: [https://github.com/wandskk/devwkstore](https://github.com/wandskk/devwkstore)
+Código fonte disponível em: [https://github.com/wandskk/devwkstore](https://github.com/wandskk/devwkstore)
 
-## 🧰 Technologies Used
-
+## 🧰 Tecnologias Utilizadas
 
 - **Frontend:**
   - Next.js 15
@@ -21,6 +20,7 @@ Source code available at: [https://github.com/wandskk/devwkstore](https://github
   - ShadCN UI
   - React Hook Form
   - Zod
+  - Recharts (visualização de dados)
 
 - **Backend:**
   - PostgreSQL (Neon)
@@ -28,50 +28,74 @@ Source code available at: [https://github.com/wandskk/devwkstore](https://github
   - NextAuth.js
   - Uploadthing
   - Jest
+  - Server Actions
 
-- **Payments & Emails:**
+- **Pagamentos & E-mails:**
   - Stripe API
-  - PayPal API
-  - Resend (for transactional emails)
+  - PayPal API (Sandbox)
+  - Resend (para e-mails transacionais)
 
-- **Others:**
-  - Recharts (data visualization)
-  - Vercel (continuous deployment)
+- **DevOps & Infraestrutura:**
+  - Vercel (deploy contínuo)
+  - GitHub Actions
+  - PostgreSQL (Neon)
 
-## 🛠️ Features
+## 🛠️ Funcionalidades Implementadas
 
-- User authentication with NextAuth.js
-- Product listing and detailed views
-- Shopping cart with session persistence
-- Checkout with multiple payment options: Stripe, PayPal, and Cash on Delivery
-- Order history and user profile management
-- Administrative dashboard for managing products, users, and orders
-- Image uploading for products with Uploadthing
-- Order confirmation emails sent via Resend
-- Responsive and modern interface with Tailwind CSS and ShadCN UI
-- Form validation with React Hook Form and Zod
-- Automated testing with Jest
+### Autenticação e Usuários
+- [x] Sistema completo de autenticação com NextAuth.js
+- [x] Login e registro de usuários
+- [x] Proteção de rotas para usuários autenticados
+- [x] Gerenciamento de sessão com JWT
+- [x] Perfil de usuário com endereço de entrega
 
-## 📦 Installation
+### Produtos e Catálogo
+- [x] Listagem de produtos com paginação
+- [x] Visualização detalhada de produtos
+- [x] Galeria de imagens com suporte a múltiplas fotos
+- [x] Upload de imagens com Uploadthing
+- [x] Filtros e busca de produtos
 
-To run the project locally:
+### Carrinho e Checkout
+- [x] Carrinho de compras com persistência de sessão
+- [x] Gerenciamento de quantidade de itens
+- [x] Cálculo dinâmico de subtotal
+- [x] Processo de checkout em etapas
+- [x] Seleção de método de pagamento
+- [x] Integração com PayPal Sandbox
+- [x] Formulário de endereço de entrega
 
-1. **Clone the repository:**
+### Pedidos
+- [x] Criação e gerenciamento de pedidos
+- [x] Histórico de pedidos
+- [x] Detalhes do pedido com status
+- [x] Confirmação por e-mail
 
+### Interface e UX
+- [x] Design responsivo com Tailwind CSS
+- [x] Componentes modernos com ShadCN UI
+- [x] Tema claro/escuro
+- [x] Menu responsivo
+- [x] Animações e transições suaves
+- [x] Validação de formulários com Zod
+
+## 📦 Instalação
+
+Para executar o projeto localmente:
+
+1. **Clone o repositório:**
    ```bash
    git clone https://github.com/wandskk/devwkstore.git
    cd devwkstore
-   ````
+   ```
 
-2. **Install dependencies:**
-
+2. **Instale as dependências:**
    ```bash
    npm install
-   ````
+   ```
 
-3. **Configure environment variables:**
-Create a .env.local file at the root of the project with the following content:
-
+3. **Configure as variáveis de ambiente:**
+   Crie um arquivo `.env.local` na raiz do projeto com o seguinte conteúdo:
    ```bash
    NEXT_PUBLIC_APP_NAME="DevwkStore"
    NEXT_PUBLIC_APP_DESCRIPTION="A modern ecommerce platform built with Next.js"
@@ -82,55 +106,47 @@ Create a .env.local file at the root of the project with the following content:
    NEXTAUTH_URL="http://localhost:3000"
    NEXTAUTH_URL_INTERNAL="http://localhost:3000"
    ENCRYPTION_KEY="your_encryption_key"
-   ````
+   PAYPAL_CLIENT_ID="your_paypal_client_id"
+   PAYPAL_CLIENT_SECRET="your_paypal_client_secret"
+   ```
 
-4. **Run database migrations:**
-
+4. **Execute as migrações do banco de dados:**
    ```bash
    npx prisma migrate dev
-   ````
+   ```
 
-5. **Start the development server:**
-
+5. **Inicie o servidor de desenvolvimento:**
    ```bash
    npm run dev
-   ````
+   ```
 
-## ✅ Testing
-To run tests:
-
+## ✅ Testes
+Para executar os testes:
    ```bash
    npm run test
-   ````
+   ```
 
-## 📈 Roadmap
+## 📈 Próximos Passos
 
-[x] User authentication
+- [ ] Integração completa com Stripe
+- [ ] Sistema de avaliações e reviews
+- [ ] Dashboard administrativo com gráficos
+- [ ] Filtros avançados de busca
+- [ ] Sistema de notificações
+- [ ] Otimizações de performance
+- [ ] Testes de integração
+- [ ] Internacionalização (i18n)
 
-[x] Product listing and detailed views
+## 🤝 Contribuindo
+Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou enviar pull requests com melhorias, correções ou novas funcionalidades.
 
-[ ] Shopping cart and checkout
+## 📄 Licença
+Este projeto está licenciado sob a Licença MIT.
 
-[ ] Integration with Stripe and PayPal
+## 📬 Contato
 
-[ ] Administrative dashboard
+Nome: Wanderson
 
-[ ] Review and rating system
+LinkedIn: [https://www.linkedin.com/in/wanderson-kenedy-soares/](https://www.linkedin.com/in/wanderson-kenedy-soares/)
 
-[ ] Advanced search filters
-
-[ ] Performance and accessibility optimizations
-
-## 🤝 Contributing
-Contributions are welcome! Feel free to open issues or submit pull requests with improvements, fixes, or new features.
-
-## 📄 License
-This project is licensed under the MIT License.
-
-## 📬 Contact
-
-Name: Wanderson
-
-LinkedIn: [[https://devwkstoree.vercel.app/](https://www.linkedin.com/in/wanderson-kenedy-soares/)]
-
-Email: [[devwk.c@gmail.com](mailto:devwk.c@gmail.com)]
+Email: [devwk.c@gmail.com](mailto:devwk.c@gmail.com)
