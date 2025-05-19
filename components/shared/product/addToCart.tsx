@@ -1,13 +1,13 @@
 "use client";
 
 import React from "react";
-import { Cart, CartItem } from "@/lib/types/cart";
+import { Cart, CartItem } from "@/lib/types/cart.types";
 import { Button } from "@/components/ui/button";
 import { Plus, Minus, Loader } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/useToast";
 import { ToastAction } from "@/components/ui/toast";
-import { addItemToCart, removeItemFromCart } from "@/lib/actions/cart.actions";
+import { addItemToCart, removeItemFromCart } from "@/lib/actions/cart";
 
 const AddToCart = ({ cart, item }: { cart?: Cart; item: CartItem }) => {
   const router = useRouter();

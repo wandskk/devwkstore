@@ -1,12 +1,12 @@
 import React from "react";
-import { getProductBySlug } from "@/lib/actions/product.actions";
+import { getProductBySlug } from "@/lib/actions/product";
 import { notFound } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import ProductPrice from "@/components/shared/product/productPrice";
 import ProductImages from "@/components/shared/product/productImages";
 import AddToCart from "@/components/shared/product/addToCart";
-import { getMyCart } from "@/lib/actions/cart.actions";
+import { getMyCart } from "@/lib/actions/cart";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

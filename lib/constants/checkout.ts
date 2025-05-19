@@ -1,4 +1,4 @@
-import { CheckoutStepNavigation } from "../types/checkout";
+import { CheckoutStepNavigation } from "@/lib/types/checkout.types";
 
 export const CHECKOUT_CONSTANTS = {
   navigation: [

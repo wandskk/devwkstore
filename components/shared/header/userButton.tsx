@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { UserIcon } from "lucide-react";
 import Link from "next/link";
 import React from "react";
-import { signOutUser } from "@/lib/actions/user.actions";
+import { signOutUser } from "@/lib/actions/user";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,10 +10,10 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { userUtils } from "@/utils/userUtils";
+import { getUserWithSession } from "@/lib/utils/user.utils";
 
 const UserButton = async () => {
-  const user = await userUtils.getUserWithSession();
+  const user = await getUserWithSession();
 
   if (!user) {
     return <UserButtonSignIn />;

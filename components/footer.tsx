@@ -1,12 +1,12 @@
 import { APP_CONSTANTS } from "@/lib/constants/app";
-import { dateUtils } from "@/utils/dateUtils";
+import { getCurrentYear } from "@/lib/utils/date.utils";
 
 const Footer = () => {
   return (
     <footer className="border-t">
       <div className="p-5 flex flex-col items-center gap-1 text-sm text-center">
         <div>
-          {dateUtils.getCurrentYear()} © {APP_CONSTANTS.name}. All Rights
+          {getCurrentYear()} © {APP_CONSTANTS.name}. All Rights
           Reserved.
         </div>
         <div>

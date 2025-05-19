@@ -1,14 +1,14 @@
 import React from "react";
 import { Metadata } from "next";
 import PaymentMethodForm from "./paymentMethodForm";
-import { userUtils } from "@/utils/userUtils";
+import { getUserWithSession } from "@/lib/utils/user.utils";
 
 export const metadata: Metadata = {
   title: "Select Payment Method",
 };
 
 const PaymentMethodPage = async () => {
-  const user = await userUtils.getUserWithSession();
+  const user = await getUserWithSession();
 
   return (
     <>

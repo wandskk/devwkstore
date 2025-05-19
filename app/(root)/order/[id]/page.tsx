@@ -1,9 +1,9 @@
 import { Metadata } from "next";
 import React from "react";
 import { notFound } from "next/navigation";
-import { getOrderById } from "@/lib/actions/order.actions";
+import { getOrderById } from "@/lib/actions/order";
 import OrderDetailsTable from "./orderDetailsTable";
-import { ShippingAddress } from "@/lib/types/shipping";
+import { ShippingAddress } from "@/lib/types/shipping.types";
 
 export const metadata: Metadata = {
   title: "Order Details",
@@ -20,7 +20,7 @@ const OrderDetailsPage = async (props: { params: Promise<{ id: string }> }) => {
       order={{
         ...order,
         userId: order.userId ?? "",
-        orderItems: order.orderitems,
+        orderItems: order.orderItems,
         user: order.user ?? { name: "", email: "" },
         shippingAddress: order.shippingAddress as ShippingAddress,
       }}
