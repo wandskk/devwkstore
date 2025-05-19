@@ -2,20 +2,20 @@
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { Order } from "@/types/order";
+import { Order } from "@/lib/types/order";
 import { dateUtils } from "@/utils/dateUtils";
 import { uuidUtils } from "@/utils/uuid";
-import CartTable from "../../cart/cartTable";
+import CartTable from "@/app/(root)/cart/cartTable";
 import { currencyUtils } from "@/utils/currencyUtils";
 
 const OrderDetailsTable = ({ order }: { order: Order }) => {
   const {
     shippingAddress,
-    orderItems,
-    itemsPrice,
-    shippingPrice,
-    taxPrice,
-    totalPrice,
+    // orderItems,
+    // itemsPrice,
+    // shippingPrice,
+    // taxPrice,
+    // totalPrice,
     paymentMethod,
     isDelivered,
     deliveredAt,

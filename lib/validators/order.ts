@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { currency } from "./currency";
-import { PAYMENT_METHODS } from "../constants";
+import { PAYMENT_CONSTANTS } from "@/lib/constants/payment";
 import { shippingAddressSchema } from "./shippingAddress";
 
 export const insertOrderSchema = z.object({
@@ -9,9 +9,11 @@ export const insertOrderSchema = z.object({
   shippingPrice: currency,
   taxPrice: currency,
   totalPrice: currency,
-  paymentMethod: z.string().refine((data) => PAYMENT_METHODS.includes(data), {
-    message: "Invalid payment method",
-  }),
+  paymentMethod: z
+    .string()
+    .refine((data) => PAYMENT_CONSTANTS.methods.includes(data), {
+      message: "Invalid payment method",
+    }),
   shippingAddress: shippingAddressSchema,
 });
 

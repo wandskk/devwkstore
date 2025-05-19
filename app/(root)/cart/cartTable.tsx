@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Cart, CartItem } from "@/types/cart";
+import { Cart, CartItem } from "@/lib/types/cart";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/useToast";
 import { useTransition } from "react";

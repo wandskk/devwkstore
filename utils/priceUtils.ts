@@ -1,4 +1,4 @@
-import { CartItem } from "@/types/cart";
+import { CartItem } from "@/lib/types/cart";
 import { numberUtils } from "./numberUtils";
 
 export const priceUtils = {

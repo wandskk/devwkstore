@@ -1,14 +1,14 @@
 "use client";
 
 import React, { useTransition } from "react";
-import { ShippingAddress } from "@/types/shippingAddress";
+import { ShippingAddress } from "@/lib/types/shipping";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/useToast";
 import { shippingAddressSchema } from "@/lib/validators/shippingAddress";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ControllerRenderProps, SubmitHandler, useForm } from "react-hook-form";
-import { shippingAddressDefaultValues } from "@/lib/constants";
+import { FORM_CONSTANTS } from "@/lib/constants/form";
 import {
   Form,
   FormControl,
@@ -20,18 +20,20 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Loader } from "lucide-react";
-import { formShippingAddressfields } from "@/lib/constants/formShippingAddressfields";
+import { SHIPPING_CONSTANTS } from "@/lib/constants/shipping";
 import { updateUserAddress } from "@/lib/actions/user.actions";
+import { FormShippingAddressField } from "@/lib/types/forms";
 
 type ShippingAddressFormFields = keyof z.infer<typeof shippingAddressSchema>;
 
 const ShippingAddressForm = ({ address }: { address: ShippingAddress }) => {
+  const { shippingAddress } = FORM_CONSTANTS;
   const router = useRouter();
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof shippingAddressSchema>>({
     resolver: zodResolver(shippingAddressSchema),
-    defaultValues: address || shippingAddressDefaultValues,
+    defaultValues: address || shippingAddress.defaultValues,
   });
 
   const [isPending, startTransition] = useTransition();
@@ -91,7 +93,9 @@ const ShippingAddressFormFields = ({
 }: {
   form: ReturnType<typeof useForm<z.infer<typeof shippingAddressSchema>>>;
 }) => {
-  return formShippingAddressfields.map((fld) => (
+  const { shippingAddressfields } = SHIPPING_CONSTANTS.form;
+
+  return shippingAddressfields.map((fld: FormShippingAddressField) => (
     <div className="flex flex-col md:flex-row gap-5" key={fld.name}>
       <FormField
         control={form.control}

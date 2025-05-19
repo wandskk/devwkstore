@@ -1,4 +1,4 @@
-import { Cart, CartItem } from "@/types/cart";
+import { Cart, CartItem } from "@/lib/types/cart";
 import { cookies } from "next/headers";
 import { userUtils } from "./userUtils";
 

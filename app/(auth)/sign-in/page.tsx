@@ -8,7 +8,7 @@ import {
 import { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { APP_NAME } from "@/lib/constants";
+import { APP_CONSTANTS } from "@/lib/constants/app";
 import CredentialsSignInForm from "./credentials-signin-form";
 import { redirect } from "next/navigation";
 import { userUtils } from "@/utils/userUtils";
@@ -37,7 +37,7 @@ const SignInPage = async (props: {
               src="/images/logo.svg"
               width={100}
               height={100}
-              alt={`${APP_NAME} logo`}
+              alt={`${APP_CONSTANTS.name} logo`}
               priority={true}
             />
           </Link>

@@ -2,11 +2,11 @@
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/useToast";
 import { useTransition } from "react";
-import { paymentMethodSchema } from "@/lib/validators/paymentMethod";
+import { paymentMethodSchema } from "@/lib/validators/payment";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { DEFAULT_PAYMENT_METHOD, PAYMENT_METHODS } from "@/lib/constants";
+import { PAYMENT_CONSTANTS } from "@/lib/constants/payment";
 import {
   Form,
   FormControl,
@@ -31,7 +31,7 @@ const PaymentMethodForm = ({
   const form = useForm<z.infer<typeof paymentMethodSchema>>({
     resolver: zodResolver(paymentMethodSchema),
     defaultValues: {
-      type: preferredPaymentMethod || DEFAULT_PAYMENT_METHOD,
+      type: preferredPaymentMethod || PAYMENT_CONSTANTS.methodsDefault,
     },
   });
 
@@ -101,7 +101,7 @@ const PaymentMethodRadioGroup = ({
                 onValueChange={field.onChange}
                 className="flex flex-col space-y-2"
               >
-                {PAYMENT_METHODS.map((paymentMethod) => (
+                {PAYMENT_CONSTANTS.methods.map((paymentMethod) => (
                   <FormItem
                     key={paymentMethod}
                     className="flex items-center space-x-3 space-y-0"

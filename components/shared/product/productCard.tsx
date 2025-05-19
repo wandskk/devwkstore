@@ -3,7 +3,7 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import ProductPrice from "./productPrice";
-import { Product } from "@/types/product";
+import { Product } from "@/lib/types/product";
 
 interface ProductCardProps {
   product: Product;

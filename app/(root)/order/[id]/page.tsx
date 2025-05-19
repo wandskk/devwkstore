@@ -3,7 +3,7 @@ import React from "react";
 import { notFound } from "next/navigation";
 import { getOrderById } from "@/lib/actions/order.actions";
 import OrderDetailsTable from "./orderDetailsTable";
-import { ShippingAddress } from "@/types/shippingAddress";
+import { ShippingAddress } from "@/lib/types/shipping";
 
 export const metadata: Metadata = {
   title: "Order Details",
@@ -19,9 +19,9 @@ const OrderDetailsPage = async (props: { params: Promise<{ id: string }> }) => {
     <OrderDetailsTable
       order={{
         ...order,
-        userId: order.userId ?? '',
+        userId: order.userId ?? "",
         orderItems: order.orderitems,
-        user: order.user ?? { name: '', email: '' },
+        user: order.user ?? { name: "", email: "" },
         shippingAddress: order.shippingAddress as ShippingAddress,
       }}
     />
