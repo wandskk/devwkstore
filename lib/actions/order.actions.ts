@@ -6,6 +6,7 @@ import { userUtils } from "@/utils/userUtils";
 import { isRedirectError } from "next/dist/client/components/redirect";
 import { getMyCart } from "./cart.actions";
 import { CartItem } from "@/types/cart";
+import { convertUtils } from "@/utils/convertUtils";
 
 export const createOrder = async () => {
   try {
@@ -52,39 +53,41 @@ export const createOrder = async () => {
       totalPrice: cart!.totalPrice,
     };
 
-    const insertedOrderId = await prisma.$transaction(async (tx): Promise<string> => {
-      const insertedOrder = await tx.order.create({
-        data: order,
-      });
+    const insertedOrderId = await prisma.$transaction(
+      async (tx): Promise<string> => {
+        const insertedOrder = await tx.order.create({
+          data: order,
+        });
 
-      for (const item of cart?.items as CartItem[]) {
-        await tx.orderItem.create({
+        for (const item of cart?.items as CartItem[]) {
+          await tx.orderItem.create({
+            data: {
+              productId: item.productId,
+              name: item.name,
+              slug: item.slug,
+              image: item.image,
+              price: item.price,
+              qty: item.qty,
+              orderId: insertedOrder.id,
+            },
+          });
+        }
+
+        await tx.cart.update({
+          where: {
+            id: cart?.id,
+          },
           data: {
-            productId: item.productId,
-            name: item.name,
-            slug: item.slug,
-            image: item.image,
-            price: item.price,
-            qty: item.qty,
-            orderId: insertedOrder.id,
+            items: [],
+            totalPrice: 0,
+            taxPrice: 0,
+            shippingPrice: 0,
+            itemsPrice: 0,
           },
         });
+        return insertedOrder.id;
       }
-
-      await tx.cart.update({
-        where: {
-          id: cart?.id,
-        },
-        data: {
-          items: [],
-          totalPrice: 0,
-          taxPrice: 0,
-          shippingPrice: 0,
-          itemsPrice: 0,
-        },
-      });
-      return insertedOrder.id;
-    });
+    );
 
     if (!insertedOrderId) throw new Error("Order not created");
 
@@ -101,3 +104,17 @@ export const createOrder = async () => {
     };
   }
 };
+
+export async function getOrderById(orderId: string) {
+  const order = await prisma.order.findFirst({
+    where: {
+      id: orderId,
+    },
+    include: {
+      orderitems: true,
+      user: { select: { name: true, email: true } },
+    },
+  });
+
+  return convertUtils.convertToPlainObject(order);
+}
