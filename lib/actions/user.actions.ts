@@ -6,9 +6,9 @@ import { isRedirectError } from "next/dist/client/components/redirect";
 import { hashSync } from "bcrypt-ts-edge";
 import { prisma } from "@/db/prisma";
 import { errorUtils } from "@/utils/errorUtils";
-import { ShippingAddress } from "@/types/shippingAddress";
+import { ShippingAddress } from "@/lib/types/shipping";
 import { shippingAddressSchema } from "../validators/shippingAddress";
-import { paymentMethodSchema } from "../validators/paymentMethod";
+import { paymentMethodSchema } from "../validators/payment";
 import { z } from "zod";
 import { userUtils } from "@/utils/userUtils";
 

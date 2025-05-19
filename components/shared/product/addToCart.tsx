@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Cart, CartItem } from "@/types/cart";
+import { Cart, CartItem } from "@/lib/types/cart";
 import { Button } from "@/components/ui/button";
 import { Plus, Minus, Loader } from "lucide-react";
 import { useRouter } from "next/navigation";

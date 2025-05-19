@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { signInDefaultValues } from "@/lib/constants";
+import { FORM_CONSTANTS } from "@/lib/constants/form";
 import Link from "next/link";
 import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
@@ -11,6 +11,8 @@ import { signInWithCredentials } from "@/lib/actions/user.actions";
 import { useSearchParams } from "next/navigation";
 
 const CredentialsSignInForm = () => {
+  const { signIn } = FORM_CONSTANTS;
+
   const [data, action] = useActionState(signInWithCredentials, {
     success: false,
     message: "",
@@ -41,7 +43,7 @@ const CredentialsSignInForm = () => {
             type="email"
             required
             autoComplete="email"
-            defaultValue={signInDefaultValues.email}
+            defaultValue={signIn.defaultValues.email}
           />
         </div>
         <div>
@@ -52,7 +54,7 @@ const CredentialsSignInForm = () => {
             type="password"
             required
             autoComplete="password"
-            defaultValue={signInDefaultValues.password}
+            defaultValue={signIn.defaultValues.password}
           />
         </div>
         <div>

@@ -5,7 +5,7 @@ import { errorUtils } from "@/utils/errorUtils";
 import { userUtils } from "@/utils/userUtils";
 import { isRedirectError } from "next/dist/client/components/redirect";
 import { getMyCart } from "./cart.actions";
-import { CartItem } from "@/types/cart";
+import { CartItem } from "@/lib/types/cart";
 import { convertUtils } from "@/utils/convertUtils";
 
 export const createOrder = async () => {

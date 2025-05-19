@@ -1,5 +1,5 @@
-import { CartItem } from "@/types/cart";
-import { Product } from "@/types/product";
+import { CartItem } from "@/lib/types/cart";
+import { Product } from "@/lib/types/product";
 
 export const productUtils = {
   validateStock: (product: Product, compareWith?: CartItem) => {

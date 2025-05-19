@@ -1,10 +1,10 @@
 "use server";
 
-import { Cart, CartItem } from "@/types/cart";
+import { Cart, CartItem } from "@/lib/types/cart";
 import { errorUtils } from "@/utils/errorUtils";
 import { cartUtils } from "@/utils/cartUtils";
 import { prisma } from "@/db/prisma";
-import { cartItemSchema, insertCartSchema } from "../validators/cart";
+import { cartItemSchema, insertCartSchema } from "@/lib/validators/cart";
 import { getProductById } from "./product.actions";
 import { priceUtils } from "@/utils/priceUtils";
 import { revalidatePath } from "next/cache";

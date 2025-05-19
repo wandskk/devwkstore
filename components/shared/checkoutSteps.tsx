@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { checkoutStepsData } from "@/lib/constants/CheckoutStepsData";
+import { CHECKOUT_CONSTANTS } from "@/lib/constants/checkout";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
@@ -12,26 +12,33 @@ interface Step {
 }
 
 const CheckoutSteps = () => {
+  const { navigation: steps } = CHECKOUT_CONSTANTS;
   const pathname = usePathname();
-  const currentStep = checkoutStepsData.findIndex((step) =>
-    pathname.includes(step.href)
-  );
+  const currentStep = steps.findIndex((step) => pathname.includes(step.href));
   const handleBlock = {
     pages: ["/cart", "/products", "/order"],
     isBlocked: (path: string) =>
-      path === "/" ? true : handleBlock.pages.some((page) => path.includes(page)),
+      path === "/"
+        ? true
+        : handleBlock.pages.some((page) => path.includes(page)),
   };
 
   if (handleBlock.isBlocked(pathname)) return null;
 
   return (
     <div className="flex-between flex-col md:flex-row space-x-2 space-y-2 mb-10">
-      <CheckoutStep steps={checkoutStepsData} currentStep={currentStep} />
+      <CheckoutStep steps={steps} currentStep={currentStep} />
     </div>
   );
 };
 
-const CheckoutStep = ({ steps, currentStep }: { steps: Step[], currentStep: number }) => {
+const CheckoutStep = ({
+  steps,
+  currentStep,
+}: {
+  steps: Step[];
+  currentStep: number;
+}) => {
   return steps.map((step, index) => {
     return (
       <React.Fragment key={step.label}>
@@ -50,6 +57,6 @@ const CheckoutStep = ({ steps, currentStep }: { steps: Step[], currentStep: numb
       </React.Fragment>
     );
   });
-}
+};
 
 export default CheckoutSteps;

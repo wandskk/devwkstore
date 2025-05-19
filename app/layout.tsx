@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { APP_NAME, APP_DESCRIPTION, SERVER_URL } from "@/lib/constants";
+import { APP_CONSTANTS } from "@/lib/constants/app";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "@/components/ui/toaster";
 
@@ -12,11 +12,11 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    template: `%s | ${APP_NAME}`,
-    default: APP_NAME,
+    template: `%s | ${APP_CONSTANTS.name}`,
+    default: APP_CONSTANTS.name,
   },
-  description: APP_DESCRIPTION,
-  metadataBase: new URL(SERVER_URL),
+  description: APP_CONSTANTS.description,
+  metadataBase: new URL(APP_CONSTANTS.serverUrl),
 };
 
 export default function RootLayout({

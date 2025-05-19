@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { APP_NAME } from "@/lib/constants";
+import { APP_CONSTANTS } from "@/lib/constants/app";
 import Logo from "@/components/shared/logo";
 import Menu from "@/components/shared/header/menu";
 
@@ -11,7 +11,7 @@ const Header = () => {
           <Link href="/" className="flex-start">
             <Logo />
             <span className="hidden lg:block font-bold text-2xl ml-3">
-              {APP_NAME}
+              {APP_CONSTANTS.name}
             </span>
           </Link>
         </div>

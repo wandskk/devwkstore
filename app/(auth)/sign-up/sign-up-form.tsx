@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { signUpDefaultValues } from "@/lib/constants";
+import { FORM_CONSTANTS } from "@/lib/constants/form";
 import Link from "next/link";
 import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
@@ -11,6 +11,7 @@ import { signUpUser } from "@/lib/actions/user.actions";
 import { useSearchParams } from "next/navigation";
 
 const SignUpForm = () => {
+  const { signUp } = FORM_CONSTANTS;
   const [data, action] = useActionState(signUpUser, {
     success: false,
     message: "",
@@ -41,7 +42,7 @@ const SignUpForm = () => {
             type="text"
             required
             autoComplete="name"
-            defaultValue={signUpDefaultValues.name}
+            defaultValue={signUp.defaultValues.name}
           />
         </div>
         <div>
@@ -52,7 +53,7 @@ const SignUpForm = () => {
             type="text"
             required
             autoComplete="email"
-            defaultValue={signUpDefaultValues.email}
+            defaultValue={signUp.defaultValues.email}
           />
         </div>
         <div>
@@ -63,7 +64,7 @@ const SignUpForm = () => {
             type="password"
             required
             autoComplete="password"
-            defaultValue={signUpDefaultValues.password}
+            defaultValue={signUp.defaultValues.password}
           />
         </div>
         <div>
@@ -74,7 +75,7 @@ const SignUpForm = () => {
             type="password"
             required
             autoComplete="confirmPassword"
-            defaultValue={signUpDefaultValues.confirmPassword}
+            defaultValue={signUp.defaultValues.confirmPassword}
           />
         </div>
         <div>
