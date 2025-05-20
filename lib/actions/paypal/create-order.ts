@@ -1,15 +1,14 @@
-import { generatePaypalAccessToken } from "@/lib/helpers/paypal.helpers";
+import { getPaypalAccessToken } from "@/lib/utils/paypal.utils";
 import { PAYPAL_CONSTANTS } from "@/lib/constants/paypal";
 import { PaypalOrderResponse } from "@/lib/types/paypal.types";
 
 const { apiUrl } = PAYPAL_CONSTANTS;
 
-
 export async function createPaypalOrder(
   amount: string,
   currency: string = "USD"
 ): Promise<PaypalOrderResponse> {
-  const accessToken = await generatePaypalAccessToken();
+  const accessToken = await getPaypalAccessToken();
 
   const response = await fetch(`${apiUrl}/v2/checkout/orders`, {
     method: "POST",

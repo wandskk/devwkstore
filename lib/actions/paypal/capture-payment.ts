@@ -1,12 +1,11 @@
-import { generatePaypalAccessToken } from "@/lib/helpers/paypal.helpers";
+import { getPaypalAccessToken } from "@/lib/utils/paypal.utils";
 import { PAYPAL_CONSTANTS } from "@/lib/constants/paypal";
 import { PaypalCaptureResponse } from "@/lib/types/paypal.types";
 
 const { apiUrl } = PAYPAL_CONSTANTS;
 
-
 export async function capturePaypalPayment(orderId: string): Promise<PaypalCaptureResponse> {
-  const accessToken = await generatePaypalAccessToken();
+  const accessToken = await getPaypalAccessToken();
 
   const response = await fetch(
     `${apiUrl}/v2/checkout/orders/${orderId}/capture`,
