@@ -2,7 +2,7 @@
 
 import React from "react";
 import { CHECKOUT_CONSTANTS } from "@/lib/constants/checkout";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils/utils";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 
